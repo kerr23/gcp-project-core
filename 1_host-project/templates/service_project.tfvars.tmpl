@@ -1,0 +1,15 @@
+###########################################
+# Add the following lines to your 
+# terraform.tfvars for your service project
+###########################################
+project_prefix     = "${project_prefix}"
+host_project_id    = "${host_project_id}"
+org_id             = ${org_id}
+folder_id          = ${folder_id}
+billing_account    = "${billing_account}"
+shared_vpc_subnets = {
+%{ for k,v in subnets ~}
+   ${v.name} = "${v.region}"
+%{ endfor ~}
+}
+###########################################

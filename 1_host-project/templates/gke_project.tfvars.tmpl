@@ -1,0 +1,24 @@
+###########################################
+# Add the following lines to your 
+# terraform.tfvars for your GKE Module
+###########################################
+project_prefix     = "${project_prefix}"
+network            = "${network}"
+host_project_id    = "${host_project_id}"
+
+gke_clusters = {
+%{ for k,v in subnets ~}
+  gke-${v.region} = {
+    subnetwork        = "${v.name}"
+    region            = "${v.region}"
+%{ for x,y in v.secondary_ip_range ~}
+%{ if length(regexall("pod", y.range_name)) > 0 ~}
+    ip_range_pods     = "${y.range_name}"
+%{ else ~}
+    ip_range_services = "${y.range_name}"
+%{ endif ~}
+%{ endfor ~}
+  }
+%{ endfor ~}
+}
+###########################################
