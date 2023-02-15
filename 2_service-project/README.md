@@ -10,7 +10,10 @@ This module:
 
 ## Requirements
 
-No requirements.
+| Name | Version |
+|------|---------|
+| google | >=4.22 |
+| google-beta | >=4.22 |
 
 ## Providers
 
@@ -40,6 +43,7 @@ No requirements.
 | host\_project\_id | The ID of the VPC host project | `string` | n/a | yes |
 | org\_id | The GCP organization ID to create this within | `number` | n/a | yes |
 | shared\_vpc\_subnets | A map of subnets in { subnet = region } format | `map(string)` | n/a | yes |
+| additional\_apis | A list of GCP APIs to enable for the project | `list(string)` | `[]` | no |
 | groups | A list of groups to grant the project role/editor to | `set(string)` | `[]` | no |
 | labels | A map of k/v pairs for project labels | `map` | `{}` | no |
 | owners | A list of identiies to grant the project role/owner to | `set(string)` | `[]` | no |
