@@ -67,6 +67,12 @@ module "vpc" {
       subnet_region         = "us-central1"
       subnet_private_access = "true"
     },
+    {
+      subnet_name           = "subnet-04"
+      subnet_ip             = "10.40.0.0/16"
+      subnet_region         = "us-west2"
+      subnet_private_access = "true"
+    },
   ]
 
   secondary_ranges = {
@@ -128,3 +134,36 @@ module "dns-private-zone" {
   ]
 }
 
+# resource "google_compute_global_address" "private_ip_alloc" {
+#   name          = "private-ip-alloc"
+#   purpose       = "VPC_PEERING"
+#   address_type  = "INTERNAL"
+#   prefix_length = 16
+#   network       = module.vpc.network_id
+# }
+
+module "firewall_rules" {
+  source       = "terraform-google-modules/network/google//modules/firewall-rules"
+  project_id   = module.project-factory-host.project_id
+  network_name = module.vpc.network_name
+
+  rules = [{
+    name                    = "allow-ssh-ingress"
+    description             = null
+    direction               = "INGRESS"
+    priority                = null
+    ranges                  = ["0.0.0.0/0"]
+    source_tags             = null
+    source_service_accounts = null
+    target_tags             = ["ssh"]
+    target_service_accounts = null
+    allow = [{
+      protocol = "tcp"
+      ports    = ["22"]
+    }]
+    deny = []
+    log_config = {
+      metadata = "INCLUDE_ALL_METADATA"
+    }
+  }]
+}
