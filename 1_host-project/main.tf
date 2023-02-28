@@ -167,3 +167,13 @@ module "firewall_rules" {
     }
   }]
 }
+
+module "cloud-nat" {
+  source        = "terraform-google-modules/cloud-nat/google"
+  version       = "2.2.2"
+  project_id    = module.project-factory-host.project_id
+  region        = "us-west2"
+  create_router = true
+  router        = "${var.project_prefix}-router"
+  network       = module.vpc.network_name
+}
