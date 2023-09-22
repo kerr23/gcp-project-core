@@ -168,12 +168,16 @@ module "firewall_rules" {
   }]
 }
 
-module "cloud-nat" {
-  source        = "terraform-google-modules/cloud-nat/google"
-  version       = "2.2.2"
-  project_id    = module.project-factory-host.project_id
-  region        = "us-west2"
-  create_router = true
-  router        = "${var.project_prefix}-router"
-  network       = module.vpc.network_name
+module "cloud-router" {
+  source  = "terraform-google-modules/cloud-router/google"
+  version = "4.0.0"
+
+  name = "${var.project_prefix}-router"
+  network = module.vpc.network_name
+  project    = module.project-factory-host.project_id
+  region = "us-west1"
+  nats = [{
+    name = "${var.project_prefix}-nat"
+  }]
+  # insert the 4 required variables here
 }
