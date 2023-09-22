@@ -172,10 +172,10 @@ module "cloud-router" {
   source  = "terraform-google-modules/cloud-router/google"
   version = "4.0.0"
 
-  name = "${var.project_prefix}-router"
+  name    = "${var.project_prefix}-router"
   network = module.vpc.network_name
-  project    = module.project-factory-host.project_id
-  region = "us-west1"
+  project = module.project-factory-host.project_id
+  region  = "us-west1"
   nats = [{
     name = "${var.project_prefix}-nat"
   }]
